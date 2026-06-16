@@ -15,7 +15,7 @@ echo "==> Scaffolding Next.js into a temp dir, then copying into the repo…"
 # Scaffold in an empty temp dir (create-next-app refuses a non-empty dir),
 # then copy everything up — this works even if the repo already has README,
 # setup.sh, or .git.
-TMP=".__scaffold"
+TMP="/tmp/geo"
 rm -rf "$TMP"
 npx --yes create-next-app@latest "$TMP" \
   --typescript --tailwind --eslint --app --no-src-dir \
