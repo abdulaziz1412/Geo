@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Reem_Kufi, IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Cairo,  } from "next/font/google";
 import "./globals.css";
 
-const display = Reem_Kufi({
+const display = Cairo({
   subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
 });
 
-const body = IBM_Plex_Sans_Arabic({
+const body = Cairo({
   subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-body",
