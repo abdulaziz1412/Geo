@@ -119,6 +119,7 @@ export default function Home() {
       <footer className="foot">
         <div className="wrap foot-in">
           <span className="brand font-display">ذِكر</span>
+          <nav className="foot-links"><a href="/privacy">سياسة الخصوصية</a> <a href="/terms">الشروط والأحكام</a> <a href="/refund">الاسترجاع والاستبدال</a> <a href="/contact">اتصل بنا</a></nav>
           <span className="foot-note">© ٢٠٢٦ ذِكر — تحسين الظهور في محرّكات الذكاء الاصطناعي</span>
         </div>
       </footer>
