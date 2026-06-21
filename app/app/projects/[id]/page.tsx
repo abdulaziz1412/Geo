@@ -35,7 +35,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ id: 
       .from("audit_results")
       .select("mentioned, cited, share_of_voice, competitors, citations, engines(display_name)")
       .eq("run_id", latest.id);
-    results = (data ?? []) as ResultRow[];
+    results = (data ?? []) as unknown as ResultRow[];
   }
 
   const total = results.length;
