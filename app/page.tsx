@@ -9,7 +9,9 @@ export default function Home() {
           <nav className="nav-links">
             <a href="#how">كيف يعمل</a>
             <a href="#features">المزايا</a>
-            <a href="#cta" className="btn btn-ghost btn-sm">التقرير المجاني</a>
+            <a href="/pricing">الأسعار</a>
+<a href="/login">تسجيل الدخول</a>
+<a href="/signup" className="btn btn-primary btn-sm">إنشاء حساب</a>
           </nav>
         </div>
       </header>
