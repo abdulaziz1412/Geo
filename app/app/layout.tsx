@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 const NAV = [
   { href: "/app", label: "نظرة عامة" },
+  { href: "/app/generate", label: "توليد المحتوى" },
   { href: "/app/billing", label: "الاشتراك والفواتير" },
   { href: "/app/support", label: "الدعم الفني" },
 ];
