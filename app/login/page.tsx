@@ -5,6 +5,7 @@ import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { SiteHeader, SiteFooter } from "@/app/SiteChrome";
 
 function safeNext(next: string | null): string {
   if (!next || next.startsWith("//") || !/^\/[A-Za-z0-9/_\-?=&.%]*$/.test(next)) return "/app";
@@ -46,10 +47,14 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <main className="auth-wrap">
+    <div className="auth-page">
+      <SiteHeader />
+      <main className="auth-wrap">
       <Suspense fallback={<div className="auth-card"><h1 className="auth-title">تسجيل الدخول</h1></div>}>
         <LoginForm />
       </Suspense>
     </main>
+      <SiteFooter />
+    </div>
   );
 }

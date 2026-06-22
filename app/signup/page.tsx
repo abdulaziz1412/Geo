@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { SiteHeader, SiteFooter } from "@/app/SiteChrome";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -32,7 +33,9 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="auth-wrap">
+    <div className="auth-page">
+      <SiteHeader />
+      <main className="auth-wrap">
       <form className="auth-card" onSubmit={submit}>
         <h1 className="auth-title">إنشاء حساب</h1>
         <label>اسم المؤسسة<input value={orgName} onChange={(e) => setOrgName(e.target.value)} required /></label>
@@ -47,5 +50,7 @@ export default function SignupPage() {
         <p className="auth-alt">لديك حساب؟ <Link href="/login">تسجيل الدخول</Link></p>
       </form>
     </main>
+      <SiteFooter />
+    </div>
   );
 }

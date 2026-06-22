@@ -1,6 +1,7 @@
 // app/pricing/page.tsx — public pricing from the plans catalogue.
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import SubscribeButton from "./SubscribeButton";
+import { SiteHeader, SiteFooter } from "@/app/SiteChrome";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "الباقات والأسعار · ذِكر" };
@@ -12,7 +13,9 @@ export default async function PricingPage() {
   const plans = (data ?? []) as any[];
 
   return (
-    <main className="pricing-wrap">
+    <div className="auth-page">
+      <SiteHeader />
+      <main className="pricing-wrap">
       <h1 className="pricing-title">الباقات والأسعار</h1>
       <p className="pricing-sub">اختر ما يناسب نشاطك. يمكنك الترقية في أي وقت.</p>
       <div className="pricing-grid">
@@ -31,5 +34,7 @@ export default async function PricingPage() {
         ))}
       </div>
     </main>
+      <SiteFooter />
+    </div>
   );
 }
