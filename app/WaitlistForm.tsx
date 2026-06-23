@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 
-export default function WaitlistForm() {
+type WL = {
+  emailPh: string; sitePh: string; emailAria: string; siteAria: string;
+  submit: string; sending: string; doneTitle: string; doneSub: string;
+  errEmail: string; errSend: string; note: string;
+};
+
+export default function WaitlistForm({ t }: { t: WL }) {
   const [email, setEmail] = useState("");
   const [website, setWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -12,7 +18,7 @@ export default function WaitlistForm() {
     e.preventDefault();
     setError("");
     if (!email.trim()) {
-      setError("اكتب بريدك الإلكتروني لنرسل لك التقرير.");
+      setError(t.errEmail);
       return;
     }
     setStatus("loading");
@@ -26,15 +32,15 @@ export default function WaitlistForm() {
       setStatus("done");
     } catch {
       setStatus("error");
-      setError("تعذّر الإرسال الآن. حاول مرة أخرى بعد قليل.");
+      setError(t.errSend);
     }
   }
 
   if (status === "done") {
     return (
       <div className="form-done">
-        <strong>وصلنا طلبك.</strong>
-        <span>سنحلّل ظهور موقعك في إجابات الذكاء الاصطناعي ونرسل لك التقرير على بريدك.</span>
+        <strong>{t.doneTitle}</strong>
+        <span>{t.doneSub}</span>
       </div>
     );
   }
@@ -46,25 +52,25 @@ export default function WaitlistForm() {
         type="email"
         inputMode="email"
         dir="ltr"
-        placeholder="your@email.com"
+        placeholder={t.emailPh}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        aria-label="البريد الإلكتروني"
+        aria-label={t.emailAria}
       />
       <input
         className="field"
         type="text"
         dir="ltr"
-        placeholder="yourbrand.com"
+        placeholder={t.sitePh}
         value={website}
         onChange={(e) => setWebsite(e.target.value)}
-        aria-label="رابط الموقع"
+        aria-label={t.siteAria}
       />
       <button className="btn btn-primary" type="submit" disabled={status === "loading"}>
-        {status === "loading" ? "جارٍ الإرسال…" : "أرسِل لي التقرير المجاني"}
+        {status === "loading" ? t.sending : t.submit}
       </button>
       {error && <p className="form-error">{error}</p>}
-      <p className="form-note">مجاني تماماً. بريدك لن يُشارك مع أحد.</p>
+      <p className="form-note">{t.note}</p>
     </form>
   );
 }

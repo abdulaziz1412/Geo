@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Cairo,  } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
+import { getLocale, dir } from "@/lib/i18n";
 
 const display = Cairo({
-  subsets: ["arabic"],
+  subsets: ["arabic", "latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",
 });
@@ -15,14 +16,15 @@ const body = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "ذِكر — كن أنت الإجابة في محرّكات الذكاء الاصطناعي",
+  title: "ذِكر · GEO for AI search",
   description:
-    "عملاؤك يسألون ChatGPT وPerplexity وGemini بدل البحث في جوجل. ذِكر يقيس ظهور علامتك في إجاباتها بالعربية ويُريك كيف تصبح الإجابة المُوصى بها.",
+    "عملاؤك يسألون ChatGPT وPerplexity وGemini. ذِكر يقيس ظهور علامتك في إجاباتها — بالعربية والإنجليزية. Thikr measures and grows your brand's visibility inside AI answers.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
   return (
-    <html lang="ar" dir="rtl">
+    <html lang={locale} dir={dir(locale)}>
       <body className={`${display.variable} ${body.variable}`}>{children}</body>
     </html>
   );
