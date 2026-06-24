@@ -6,6 +6,10 @@ export type Locale = "ar" | "en";
 export const DEFAULT_LOCALE: Locale = "ar";
 export const LOCALE_COOKIE = "locale";
 
+// Saudi riyal is pegged to USD at 3.75 SAR per 1 USD (SAMA). Used to show the
+// matching USD price on the English pricing page.
+export const SAR_PER_USD = 3.75;
+
 export function dir(locale: Locale): "rtl" | "ltr" {
   return locale === "ar" ? "rtl" : "ltr";
 }
@@ -15,6 +19,8 @@ export function readLocaleCookie(): Locale {
   if (typeof document === "undefined") return DEFAULT_LOCALE;
   return document.cookie.split("; ").some((c) => c === "locale=en") ? "en" : "ar";
 }
+
+export type PlanContent = { name: string; desc: string; features: string[] };
 
 export type Dict = {
   brand: string;
@@ -28,7 +34,9 @@ export type Dict = {
   foot: { privacy: string; terms: string; refund: string; contact: string; note: string };
   waitlist: { emailPh: string; sitePh: string; emailAria: string; siteAria: string; submit: string; sending: string; doneTitle: string; doneSub: string; errEmail: string; errSend: string; note: string };
   chrome: { pricing: string; login: string; signup: string; fPricing: string; fPrivacy: string; fTerms: string; fContact: string; note: string };
-  pricing: { title: string; sub: string; free: string; per: string };
+  pricing: { title: string; sub: string; free: string; priceSuffix: string };
+  plans: Record<string, PlanContent>;
+  subscribe: { ctaFree: string; ctaPaid: string; busy: string; errOrg: string; errPay: string };
   login: { title: string; email: string; password: string; submit: string; busy: string; bad: string; alt: string; altLink: string };
   signup: { title: string; org: string; email: string; password: string; submit: string; busy: string; defaultOrg: string; orgErr: string; confirm: string; alt: string; altLink: string };
   langLabel: string;
@@ -83,7 +91,14 @@ const ar: Dict = {
     fPricing: "الأسعار", fPrivacy: "سياسة الخصوصية", fTerms: "الشروط والأحكام", fContact: "اتصل بنا",
     note: "© ٢٠٢٦ ذِكر",
   },
-  pricing: { title: "الباقات والأسعار", sub: "اختر ما يناسب نشاطك. يمكنك الترقية في أي وقت.", free: "مجاناً", per: "﷼ / شهرياً" },
+  pricing: { title: "الباقات والأسعار", sub: "اختر ما يناسب نشاطك. يمكنك الترقية في أي وقت.", free: "مجاناً", priceSuffix: "﷼ / شهرياً" },
+  plans: {
+    free:    { name: "مجاني",    desc: "تدقيق محدود لتجربة المنصّة", features: ["تدقيق واحد شهرياً", "مشروع واحد", "محرّكان"] },
+    starter: { name: "المبتدئ",  desc: "للأنشطة الصغيرة",          features: ["تدقيق أسبوعي", "٣ مشاريع", "كل المحرّكات", "توليد محتوى محدود"] },
+    pro:     { name: "الاحترافي", desc: "للشركات الناشئة",         features: ["تدقيق يومي", "١٥ مشروع", "توليد محتوى موسّع", "تقارير"] },
+    agency:  { name: "الوكالات",  desc: "للوكالات ومتعددي العملاء", features: ["مشاريع غير محدودة", "عملاء متعددون", "أولوية الدعم"] },
+  },
+  subscribe: { ctaFree: "ابدأ مجاناً", ctaPaid: "اشترك", busy: "…", errOrg: "أنشئ مؤسسة أولاً.", errPay: "تعذّر بدء الدفع." },
   login: {
     title: "تسجيل الدخول", email: "البريد الإلكتروني", password: "كلمة المرور",
     submit: "دخول", busy: "جارٍ الدخول…", bad: "بيانات الدخول غير صحيحة.",
@@ -147,7 +162,14 @@ const en: Dict = {
     fPricing: "Pricing", fPrivacy: "Privacy", fTerms: "Terms", fContact: "Contact",
     note: "\u00A9 2026 \u0630\u0650\u0643\u0631",
   },
-  pricing: { title: "Plans & Pricing", sub: "Pick what fits your business. Upgrade anytime.", free: "Free", per: "SAR / mo" },
+  pricing: { title: "Plans & Pricing", sub: "Pick what fits your business. Upgrade anytime.", free: "Free", priceSuffix: "/ mo" },
+  plans: {
+    free:    { name: "Free",         desc: "A limited audit to try the platform", features: ["1 audit / month", "1 project", "2 engines"] },
+    starter: { name: "Starter",      desc: "For small businesses",                features: ["Weekly audit", "3 projects", "All engines", "Limited content generation"] },
+    pro:     { name: "Professional", desc: "For startups",                        features: ["Daily audit", "15 projects", "Expanded content generation", "Reports"] },
+    agency:  { name: "Agency",       desc: "For agencies & multiple clients",     features: ["Unlimited projects", "Multiple clients", "Priority support"] },
+  },
+  subscribe: { ctaFree: "Start free", ctaPaid: "Subscribe", busy: "\u2026", errOrg: "Create an organization first.", errPay: "Couldn\u2019t start checkout." },
   login: {
     title: "Log in", email: "Email", password: "Password",
     submit: "Log in", busy: "Signing in\u2026", bad: "Invalid login details.",

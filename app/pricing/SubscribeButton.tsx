@@ -1,10 +1,12 @@
 "use client";
-// app/pricing/SubscribeButton.tsx
+// app/pricing/SubscribeButton.tsx — bilingual labels/errors via the `t` prop.
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/client";
 
-export default function SubscribeButton({ planCode, isFree }: { planCode: string; isFree: boolean }) {
+type T = { ctaFree: string; ctaPaid: string; busy: string; errOrg: string; errPay: string };
+
+export default function SubscribeButton({ planCode, isFree, t }: { planCode: string; isFree: boolean; t: T }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -18,7 +20,7 @@ export default function SubscribeButton({ planCode, isFree }: { planCode: string
 
     const { data: orgs } = await supabase.from("organizations").select("id").limit(1);
     const orgId = orgs?.[0]?.id;
-    if (!orgId) { setErr("أنشئ مؤسسة أولاً."); setBusy(false); return; }
+    if (!orgId) { setErr(t.errOrg); setBusy(false); return; }
 
     const res = await fetch("/api/payments/checkout", {
       method: "POST", headers: { "Content-Type": "application/json" },
@@ -26,14 +28,14 @@ export default function SubscribeButton({ planCode, isFree }: { planCode: string
     });
     const data = await res.json().catch(() => ({}));
     setBusy(false);
-    if (!res.ok || !data.redirectUrl) { setErr(data.error ?? "تعذّر بدء الدفع."); return; }
+    if (!res.ok || !data.redirectUrl) { setErr(data.error ?? t.errPay); return; }
     window.location.href = data.redirectUrl;
   }
 
   return (
     <>
       <button className="btn btn-primary" onClick={subscribe} disabled={busy}>
-        {busy ? "…" : isFree ? "ابدأ مجاناً" : "اشترك"}
+        {busy ? t.busy : isFree ? t.ctaFree : t.ctaPaid}
       </button>
       {err && <p className="auth-err">{err}</p>}
     </>
